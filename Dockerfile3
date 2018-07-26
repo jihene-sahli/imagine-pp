@@ -1,0 +1,14 @@
+FROM maven:3-jdk-8
+
+WORKDIR /code
+ADD pom.xml /code/pom.xml
+ADD src /code/src
+ADD script.sh /code/script.sh
+ADD ci/develop/* /code/src/main/resources/
+
+RUN apt-get update
+RUN apt-get install git -y
+
+EXPOSE 9000
+EXPOSE 9002
+ENTRYPOINT ["/code/script.sh"]

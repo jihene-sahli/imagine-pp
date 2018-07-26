@@ -1,0 +1,10 @@
+FROM tomcat:7
+
+WORKDIR /usr/local/tomcat/webapps/
+RUN echo "export JAVA_OPTS=\"-Dapp.env=staging\"" > /usr/local/tomcat/bin/setenv.sh  
+ADD imagineworkflow.war ./imagineworkflow.war
+ADD scripttom.sh /code/scripttom.sh
+EXPOSE 8080
+EXPOSE 8005 
+EXPOSE 3336
+ENTRYPOINT ["/code/scripttom.sh"]

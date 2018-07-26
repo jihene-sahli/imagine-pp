@@ -1,0 +1,26 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <p:column rendered="#{formWrapper.value.iwInput.component == 'template'}" colspan="2" >
+        <p:panel toggleable="true" header="#{formWrapper.value.iwInput.label}">
+            <p:outputPanel  rendered="#{'cascadeListeMultiple.xhtml'.equals(formWrapper.value.iwInput.value)}">
+                <ui:include src="../formTemplate/cascadeListeMultiple.xhtml" />
+            </p:outputPanel>
+            <!-- Process Anomaly Component -->
+            <p:outputPanel  rendered="#{'processAnomalie.xhtml'.equals(formWrapper.value.iwInput.value)}">
+                <ui:include src="../formTemplate/numidis/processAnomalie.xhtml" />
+            </p:outputPanel>
+            <!--Multiselect Process Anomaly Component -->
+            <p:outputPanel  rendered="#{'multiSelectProcessAnomaly.xhtml'.equals(formWrapper.value.iwInput.value)}">
+                <ui:include src="../formTemplate/numidis/multiSelectProcessAnomaly.xhtml" />
+            </p:outputPanel>
+			<p:outputPanel rendered="#{'politiquePrix.xhtml'.equals(formWrapper.value.iwInput.value)}">
+				<ui:include src="../formTemplate/numidis/politiquePrix.xhtml"/>
+			</p:outputPanel>
+			<p:outputPanel rendered="#{'uploadImg.xhtml'.equals(formWrapper.value.iwInput.value)}">
+				<ui:include src="../formTemplate/document/uploadImg.xhtml"/>
+			</p:outputPanel>
+        </p:panel>
+    </p:column>
+</ui:composition>

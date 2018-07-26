@@ -1,0 +1,49 @@
+image: maven:3-jdk-7
+
+services:
+  - mysql:5.6
+
+variables:
+  MYSQL_DATABASE: "imagineworkflow"
+  MYSQL_ROOT_PASSWORD: "root"
+  MAVEN_SETTINGS: "--settings ci/.m2/settings.xml"
+
+before_script:
+  - /bin/bash ci/bootstrap
+
+stages:
+- test
+- build
+- deploy
+
+test:
+  stage: test
+  script:
+    - cp -r ci/develop/* src/main/resources
+    - mvn flyway:migrate -B 
+    - mvn clean test -B 
+  tags:
+    - java
+  only:
+    - develop
+
+build:
+  stage: build
+  script:
+    - mvn clean install -B
+  tags:
+    - java
+  only:
+    - develop
+
+deploy:
+  stage: deploy
+  script:
+    - cp -r ci/${CI_BUILD_REF_NAME}/* src/main/resources
+    - mvn clean package -B
+    - /bin/bash ci/deploy
+  tags:
+    - java
+  only:
+    - master
+    - staging

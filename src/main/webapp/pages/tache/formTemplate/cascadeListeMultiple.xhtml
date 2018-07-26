@@ -1,0 +1,94 @@
+<ui:composition
+
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    #{taskController.registerTemplate('cascadeListMultiple','CascadeListMultiple',fn:split('sector,ray,family,subFamily',',') )}
+    <p:panelGrid columns="2">
+        
+        <!--1-->
+        <p:outputLabel value="Secteur : " />
+        <p:selectOneMenu value="#{cascadeListMultiple.varValues['sector']}"
+                         filter="true"
+                         filterMatchMode="contains"
+                         caseSensitive="false"
+                         disabled="#{!formWrapper.value.isWritable}"
+                         >
+            <f:selectItem noSelectionOption="true" />
+
+            <f:selectItems value="#{cascadeListMultiple.sectorList}"
+                           var="secItem" itemValue="#{secItem.codeSecteur}"
+
+                           itemLabel="#{secItem.intitule}" />
+            <p:ajax event="change"
+                    listener="#{cascadeListMultiple.changeRayonList}"
+                    process="@this" update="rayonList" />
+            
+        </p:selectOneMenu>
+
+        <!--2-->
+        <p:outputLabel value="Rayon : " />
+        <p:selectOneMenu id="rayonList" value="#{cascadeListMultiple.varValues['ray']}"
+                         filter="true"
+                         filterMatchMode="contains"
+                         caseSensitive="false"
+                         disabled="#{!formWrapper.value.isWritable}">
+
+            <f:selectItem noSelectionOption="true" />
+
+            <f:selectItems value="#{cascadeListMultiple.secteurRayonList}"
+                           var="rayItem" itemValue="#{rayItem.rayon.codeRayon}"
+                           itemLabel="#{rayItem.rayon.codeRayon} - #{rayItem.rayon.intitule}" />
+            
+            <p:ajax event="change"
+                    listener="#{cascadeListMultiple.changeFamilyList}"
+                    process="@this" update="familyList" />
+            
+        </p:selectOneMenu>
+
+        <!--3-->
+        <p:outputLabel value="Famille : " />
+        <p:selectOneMenu id="familyList"
+                         value="#{cascadeListMultiple.varValues['family']}"
+                         filter="true"
+                         filterMatchMode="contains"
+                         caseSensitive="false"
+                         disabled="#{!formWrapper.value.isWritable}">
+
+            <f:selectItem noSelectionOption="true" />
+
+            <f:selectItems value="#{cascadeListMultiple.secteurRayonFamilleList}"
+                           var="familyItem"
+                           itemValue="#{familyItem.famille.codeFamille}"
+                           itemLabel="#{familyItem.famille.codeFamille} -  #{familyItem.famille.intitule}" />
+            
+            <p:ajax event="change"
+                    listener="#{cascadeListMultiple.changeSubFamilyList}"
+                    process="@this" update="subFamilyList" />
+            
+        </p:selectOneMenu>
+
+        <!--4-->
+        <p:outputLabel value="Sous famille : " />
+        <p:selectOneMenu id="subFamilyList"
+                         value="#{cascadeListMultiple.varValues['subFamily']}"
+                         filter="true"
+                         filterMatchMode="contains"
+                         caseSensitive="false"
+                         disabled="#{!formWrapper.value.isWritable}">
+
+            <f:selectItem noSelectionOption="true" />
+
+            <f:selectItems value="#{cascadeListMultiple.secteurRayonFamilleSousFamilleList}"
+                           var="subFamilyItem"
+                           itemValue="#{subFamilyItem.sousFamille}"
+                           itemLabel="#{subFamilyItem.sousFamille}" />
+            
+        </p:selectOneMenu>
+    </p:panelGrid>
+</ui:composition>

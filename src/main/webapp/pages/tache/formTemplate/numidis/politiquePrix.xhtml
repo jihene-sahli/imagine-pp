@@ -1,0 +1,44 @@
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	#{taskController.registerTemplate('politiquePrix','PolitiquePrix',fn:split('prix_vente_data',',') )}
+
+	<p:dataTable id="dataPrixVent" value="#{politiquePrix.list}" var="obj" rowIndexVar="i">
+
+		<p:column headerText="">
+			<p:inputText value="#{obj.typologie}" disabled="true">
+				<p:ajax process="@this"/>
+			</p:inputText>
+		</p:column>
+		<p:column headerText="Prix Public Conseillé TTC ">
+			<p:inputText value="#{obj.prixTtc}" disabled="#{i>0}">
+				<f:convertNumber/>
+				<p:ajax listener="#{politiquePrix.calculateLines}" update="dataPrixVent" process="@this"/>
+			</p:inputText>
+		</p:column>
+		<p:column headerText="Prix Public RETENU TTC">
+			<p:inputText value="#{obj.prixRetenuTtc}">
+				<f:convertNumber/>
+				<p:ajax listener="#{politiquePrix.calculateTva(i)}" update="dataPrixVent"/>
+			</p:inputText>
+		</p:column>
+		<p:column headerText="Prix Public Hors Taxe">
+			<p:inputText value="#{obj.prixHt}" disabled="true">
+				<f:convertNumber/>
+			</p:inputText>
+		</p:column>
+		<p:column headerText="Taux De Marge">
+			<p:inputText value="#{obj.tauxMarge}">
+				<f:convertNumber/>
+				<p:ajax process="@this"/>
+			</p:inputText>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>
