@@ -1,0 +1,12 @@
+FROM tomcat:7-jre8
+WORKDIR /usr/local/tomcat/webapps/
+RUN echo "export JAVA_OPTS=\"-Dapp.env=staging\"" > /usr/local/tomcat/bin/setenv.sh
+ENV JAVA_OPTS="-XX:PermSize=1024m -XX:MaxPermSize=512m"
+#RUN echo "JAVA_OPTS="-XX:PermSize=1024m -XX:MaxPermSize=512m"" > /usr/local/tomcat/bin/setenv.sh
+ADD imagineworkflow.war ./imagineworkflow.war
+ADD scripttom.sh /home/scripttom.sh
+#COPY tomcat-users.xml /usr/local/tomcat/conf/
+EXPOSE 8080
+EXPOSE 8005
+RUN chmod +x /home/scripttom.sh
+#CMD ["catalina.sh","run"]
